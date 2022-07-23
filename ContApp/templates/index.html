@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet"
+      type="text/css"
+      href="{%static 'fullcalendar/lib/main.css' %}" />
+
+<link href="{%static 'ContApp/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{%static 'ContApp/css/theme.css' %}" rel="stylesheet" type="text/css">
+
+{% block content %}
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Home</h1>
+            <br />
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div id="calendar"> </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script src="{%static 'fullcalendar/lib/main.js' %}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let calendarEl = document.getElementById('calendar');
+
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            height: 'auto', 
+            editable: false,
+            events: [
+                {% for i in events %}
+                {
+                title: "{{ i.name}}",
+                start: '{{ i.start|date:"Y-m-d" }}',
+                end: '{{ i.end|date:"Y-m-d" }}',
+                },
+                {% endfor %}
+            ],
+        eventColor: '#504D4D',
+        eventBorderColor: '#929090'
+        });
+        calendar.render();
+});
+</script>
+{% endblock js %}
